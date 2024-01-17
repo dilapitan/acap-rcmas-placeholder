@@ -1,26 +1,16 @@
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
 
-const { DRY_SPELL_DATA1, DRY_SPELL_DATA2 } = require("./data");
+const { SEASONAL_DUMMY_DATA } = require('./data')
 
-app.get("/", (req, res) => {
-  res.send("Welcome to ACAP-RCMAS Placeholder!");
-});
+app.get('/', (req, res) => {
+  res.send('Welcome to ACAP-RCMAS Placeholder!')
+})
 
-app.get("/seasonal/dryspell/:id", (req, res) => {
-  if (req.params.id === "1") {
-    res.status(200).json({
-      data: {
-        months: DRY_SPELL_DATA1,
-      },
-    });
-  } else {
-    res.status(200).json({
-      data: {
-        months: DRY_SPELL_DATA2,
-      },
-    });
-  }
-});
+app.get('/seasonal-dummy-data', (req, res) => {
+  res.status(200).json({
+    months: SEASONAL_DUMMY_DATA,
+  })
+})
 
-app.listen(3000);
+app.listen(3000)
