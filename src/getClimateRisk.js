@@ -1,4 +1,4 @@
-const { SEASONAL_DUMMY_DATA } = require('./data')
+const { SEASONAL_DUMMY_DATA, TENDAY_DUMMY_DATA } = require('./data')
 
 function getSeasonalDecision(countDistribution) {
   // console.log('countDistribution:', countDistribution)
@@ -23,6 +23,27 @@ function getSeasonalDecision(countDistribution) {
   if (IS_DRY_SPELL) return 'Dry Spell'
   if (IS_DRY_CONDITION) return 'Dry Condition'
   if (IS_WETTER_CONDITION) return 'Wetter Condition'
+  return 'No Risk'
+}
+
+function getTenDayDecision(countDistribution) {
+  console.log('countDistribution:', countDistribution)
+
+  const flooding_submergence_3M = countDistribution['MODERATE RAINS'][0]
+  const flooding_submergence_2H = countDistribution['HEAVY RAINS'][0]
+  const dry_condition = countDistribution['NO RAIN'][0]
+
+  const IS_FLOODING_SUBMERGENCE_3M =
+    flooding_submergence_3M !== undefined && flooding_submergence_3M >= 3
+
+  const IS_FLOODING_SUBMERGENCE_2H =
+    flooding_submergence_2H !== undefined && flooding_submergence_2H >= 2
+
+  const IS_DRY_CONDITION = dry_condition !== undefined && dry_condition === 10
+
+  if (IS_FLOODING_SUBMERGENCE_3M) return 'Flooding/Submergence 3M'
+  if (IS_FLOODING_SUBMERGENCE_2H) return 'Flooding/Submergence 2H'
+  if (IS_DRY_CONDITION) return 'Dry Condition'
   return 'No Risk'
 }
 
@@ -54,16 +75,48 @@ function useSeasonalData(data) {
   return getSeasonalDecision(countDistribution)
 }
 
+function useTenDay(data) {
+  if (data.length === 0) return {}
+
+  let countDistribution = {
+    'NO RAIN': [],
+    'MODERATE RAINS': [],
+    'HEAVY RAINS': [],
+    'LIGHT RAINS': [],
+  }
+
+  let currentRainfall = data[0].rainfall
+  let count = 1
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i].rainfall === currentRainfall) {
+      count++
+    } else {
+      countDistribution[currentRainfall].push(count)
+
+      currentRainfall = data[i].rainfall
+      count = 1
+    }
+  }
+
+  // Add the last sequence to the countDistribution
+  countDistribution[currentRainfall].push(count)
+
+  return getTenDayDecision(countDistribution)
+}
+
 function getClimateRisk(recommendationsType) {
   // Assumption here is ONE Climate Risk per Seasonal or TenDay
 
   switch (recommendationsType) {
     case 'seasonal':
       return useSeasonalData(SEASONAL_DUMMY_DATA)
+    case 'tenday':
+      return useTenDay(TENDAY_DUMMY_DATA)
     default:
       break
   }
 }
 
-const result = getClimateRisk('seasonal')
+const result = getClimateRisk('tenday')
 console.log('result:', result)
