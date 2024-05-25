@@ -12,19 +12,19 @@ const TENDAY_DUMMY_DATA = [
     day: 2,
   },
   {
-    rainfall: 'MODERATE RAINS',
+    rainfall: 'NO RAIN',
     day_str: '2024/01/17',
     day_format: 'Mon Jan 17',
     day: 3,
   },
   {
-    rainfall: 'MODERATE RAINS',
+    rainfall: 'NO RAIN',
     day_str: '2024/01/18',
     day_format: 'Mon Jan 18',
     day: 4,
   },
   {
-    rainfall: 'NO RAIN',
+    rainfall: 'MODERATE RAINS',
     day_str: '2024/01/19',
     day_format: 'Mon Jan 19',
     day: 5,
@@ -36,7 +36,7 @@ const TENDAY_DUMMY_DATA = [
     day: 6,
   },
   {
-    rainfall: 'HEAVY RAINS',
+    rainfall: 'NO RAIN',
     day_str: '2024/01/21',
     day_format: 'Mon Jan 21',
     day: 7,
@@ -48,13 +48,13 @@ const TENDAY_DUMMY_DATA = [
     day: 8,
   },
   {
-    rainfall: 'NO RAIN',
+    rainfall: 'HEAVY RAINS',
     day_str: '2024/01/23',
     day_format: 'Mon Jan 23',
     day: 9,
   },
   {
-    rainfall: 'NO RAIN',
+    rainfall: 'HEAVY RAINS',
     day_str: '2024/01/24',
     day_format: 'Mon Jan 24',
     day: 10,
